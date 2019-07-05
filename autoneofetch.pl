@@ -4,8 +4,7 @@
 # Display neofetch only if no other term is open
 #
 
-our $DEFAULT_TERM = "bash";
-
+our $DEFAULT_SHELL= "bash";
 
 sub check {
 
@@ -37,16 +36,16 @@ EOF
 
 sub main {
     
-    my $term = $DEFAULT_TERM;
+    my $shell = $DEFAULT_SHELL;
 
     if (scalar @ARGV == 1
     and ($ARGV[0] eq "-h" or $ARGV[0] == "--help")) {
         print usage and exit 0;
     } elsif (scalar @ARGV == 1) {
-        $term = $ARGV[0];
+        $shell = $ARGV[0];
     }
 
-    return check $term;
+    return check $shell;
 }
 
 exit &main;
