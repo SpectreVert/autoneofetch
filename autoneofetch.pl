@@ -9,12 +9,12 @@ our $DEFAULT_TERM = "bash";
 
 sub check {
 
-    my $term = shift;
-    my @lines = split (/\n/, `ps -e | grep $term`);
+    my $shell = shift;
+    my @lines = split (/\n/, `ps -e | grep $shell`);
     my $count = 0;
 
     for my $line (@lines) {
-        if ($line =~ /[0-9]+.$term$/) {
+        if ($line =~ /[0-9]+.$shell$/) {
             $count += 1;
         }
     }
@@ -24,12 +24,24 @@ sub check {
     }
 }
 
+sub usage {
+    print STDERR << 'EOF';
+USAGE:
+    ./autoneofetch.pl [shell]
+
+OPTION:
+    shell   name of shell to use. Default: 'bash'
+EOF
+    return 0;
+}
+
 sub main {
     
     my $term = $DEFAULT_TERM;
 
-    if (scalar @ARGV == 1 and $ARGV[0] eq "-h") {
-        print "Usage:\t./$0 [term]\nterm:\t\tspecify terminal to be used [default: bash]";
+    if (scalar @ARGV == 1
+    and ($ARGV[0] eq "-h" or $ARGV[0] == "--help")) {
+        print usage and exit 0;
     } elsif (scalar @ARGV == 1) {
         $term = $ARGV[0];
     }
